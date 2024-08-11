@@ -2,16 +2,25 @@
   <div class="todo-container">
     <h1>Daftar Tugas</h1>
     <router-link to="/create" class="add-todo">Tambah Tugas Baru</router-link>
-    <ul class="todo-list">
-      <li v-for="todo in todos" :key="todo.id" class="todo-item">
-        <span class="todo-title">{{ todo.title }}</span>
-        <div class="actions">
-          <button @click="editTodo(todo)" class="edit-btn">Edit</button>
-          <button @click="deleteTodo(todo.id)" class="delete-btn">Hapus</button>
-        </div>
-      </li>
-    </ul>
-
+    <table class="todo-table">
+      <thead>
+        <tr>
+          <th>Judul</th>
+          <th>Status</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="todo in todos" :key="todo.id">
+          <td>{{ todo.title }}</td>
+          <td>{{ todo.completed ? 'Completed' : 'Pending' }}</td>
+          <td>
+            <button @click="editTodo(todo)" class="edit-btn">Edit</button>
+            <button @click="deleteTodo(todo.id)" class="delete-btn">Hapus</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <div v-if="selectedTodo" class="edit-form">
       <h2>Edit Tugas</h2>
       <form @submit.prevent="submitEdit">
@@ -19,11 +28,19 @@
           <label for="title">Judul:</label>
           <input type="text" v-model="selectedTodo.title" required class="input-field" />
         </div>
+        <div class="form-group">
+          <label for="status">Status:</label>
+          <select v-model="selectedTodo.completed" class="input-field">
+            <option :value="false">Pending</option>
+            <option :value="true">Completed</option>
+          </select>
+        </div>
         <button type="submit" class="submit-btn">Perbarui</button>
       </form>
     </div>
   </div>
 </template>
+
 
 <script>
 import { mapActions, mapState } from 'vuex';
@@ -46,19 +63,19 @@ export default {
       this.selectedTodo = { ...todo };
     },
     submitEdit() {
-  this.updateTodo(this.selectedTodo).then(() => {
-    this.selectedTodo = null; // Kosongkan form setelah diperbarui
-  });
-}
-,
+      this.updateTodo(this.selectedTodo).then(() => {
+        this.selectedTodo = null; // Kosongkan form setelah diperbarui
+      });
+    },
   },
 };
 </script>
 
 
+
 <style scoped>
 .todo-container {
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 20px;
   background-color: #f9f9f9;
@@ -86,27 +103,25 @@ h1 {
   background-color: #e57c00;
 }
 
-.todo-list {
-  list-style-type: none;
-  padding: 0;
+.todo-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
 }
 
-.todo-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #ddd;
+.todo-table thead {
+  background-color: #f2f2f2;
 }
 
-.todo-title {
-  flex-grow: 1;
-  color: #555;
+.todo-table th, .todo-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
 }
 
-.actions {
-  display: flex;
-  gap: 10px;
+.todo-table th {
+  background-color: #f4a261;
+  color: white;
 }
 
 .edit-btn, .delete-btn {
@@ -114,6 +129,7 @@ h1 {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  margin-right: 5px;
 }
 
 .edit-btn {
@@ -168,3 +184,4 @@ h1 {
   background-color: #218838;
 }
 </style>
+
