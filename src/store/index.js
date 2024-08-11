@@ -3,12 +3,12 @@ import api from '../services/api';
 
 export default createStore({
   state: {
-    todos: JSON.parse(localStorage.getItem('todos')) || [],  // Ambil dari local storage saat pertama kali halaman dimuat
+    todos: JSON.parse(localStorage.getItem('todos')) || [],  
   },
   mutations: {
     SET_TODOS(state, todos) {
       state.todos = todos;
-      localStorage.setItem('todos', JSON.stringify(state.todos)); // Simpan ke local storage
+      localStorage.setItem('todos', JSON.stringify(state.todos));
     },
     ADD_TODO(state, todo) {
       state.todos.unshift(todo);
@@ -33,9 +33,8 @@ export default createStore({
   actions: {
     async fetchTodos({ commit, state }) {
       if (state.todos.length === 0) {
-        // Jika local storage kosong, ambil data dari API
         try {
-          const response = await api.getTodos(10); // Batasi 10 item
+          const response = await api.getTodos(10);
           commit('SET_TODOS', response.data);
         } catch (error) {
           console.error('Gagal mengambil todos:', error);

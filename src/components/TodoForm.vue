@@ -25,8 +25,8 @@ export default {
     return {
       todo: {
         title: '',
-        completed: false, // Default status
-        userId: 1, // Selalu satu user
+        completed: false, 
+        userId: 1, 
       },
     };
   },

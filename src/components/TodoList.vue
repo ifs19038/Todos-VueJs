@@ -64,7 +64,7 @@ export default {
     },
     submitEdit() {
       this.updateTodo(this.selectedTodo).then(() => {
-        this.selectedTodo = null; // Kosongkan form setelah diperbarui
+        this.selectedTodo = null;
       });
     },
   },
